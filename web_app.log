@@ -1,0 +1,49 @@
+2026-01-04T14:44:52.709+0800	DEBUG	iam/main.go:38	logger Init() success
+2026-01-04T14:45:00.357+0800	ERROR	api/user_api.go:20	c.ShouldBindJSON(&p) error failed :	{"error": "invalid character '}' looking for beginning of value"}
+2026-01-04T14:45:00.358+0800	INFO	logger/logger.go:72	/signup	{"status": 200, "method": "POST", "path": "/signup", "query": "", "ip": "::1", "user-agent": "Apifox/1.0.0 (https://apifox.com)", "errors": "", "cost": 0.0004978}
+2026-01-04T14:45:24.274+0800	ERROR	api/user_api.go:20	c.ShouldBindJSON(&p) error failed :	{"error": "Key: 'User.re_password' Error:Field validation for 're_password' failed on the 'required' tag"}
+2026-01-04T14:45:24.274+0800	INFO	logger/logger.go:72	/signup	{"status": 200, "method": "POST", "path": "/signup", "query": "", "ip": "::1", "user-agent": "Apifox/1.0.0 (https://apifox.com)", "errors": "", "cost": 0}
+2026-01-04T14:47:50.899+0800	DEBUG	iam/main.go:38	logger Init() success
+2026-01-04T14:47:52.905+0800	INFO	logger/logger.go:72	/signup	{"status": 200, "method": "POST", "path": "/signup", "query": "", "ip": "::1", "user-agent": "Apifox/1.0.0 (https://apifox.com)", "errors": "", "cost": 0.0004957}
+2026-01-04T14:49:42.945+0800	DEBUG	iam/main.go:38	logger Init() success
+2026-01-04T14:49:45.229+0800	INFO	logger/logger.go:72	/signup	{"status": 200, "method": "POST", "path": "/signup", "query": "", "ip": "::1", "user-agent": "Apifox/1.0.0 (https://apifox.com)", "errors": "", "cost": 0.0004963}
+2026-01-04T14:50:49.032+0800	DEBUG	iam/main.go:38	logger Init() success
+2026-01-04T14:50:52.431+0800	ERROR	api/user_api.go:20	c.ShouldBindJSON(&p) error failed :	{"error": "Key: 'User.re_password' Error:Field validation for 're_password' failed on the 'eqfield' tag"}
+2026-01-04T14:50:52.432+0800	INFO	logger/logger.go:72	/signup	{"status": 200, "method": "POST", "path": "/signup", "query": "", "ip": "::1", "user-agent": "Apifox/1.0.0 (https://apifox.com)", "errors": "", "cost": 0.0004965}
+2026-01-04T15:57:44.631+0800	DEBUG	iam/main.go:38	logger Init() success
+2026-01-04T15:57:54.560+0800	ERROR	api/user_api.go:20	c.ShouldBindJSON(&p) error failed :	{"error": "Key: 'User.re_password' Error:Field validation for 're_password' failed on the 'eqfield' tag"}
+2026-01-04T15:57:54.560+0800	INFO	logger/logger.go:72	/signup	{"status": 200, "method": "POST", "path": "/signup", "query": "", "ip": "::1", "user-agent": "Apifox/1.0.0 (https://apifox.com)", "errors": "", "cost": 0.0005035}
+2026-01-04T15:58:10.198+0800	INFO	logger/logger.go:72	/signup	{"status": 200, "method": "POST", "path": "/signup", "query": "", "ip": "::1", "user-agent": "Apifox/1.0.0 (https://apifox.com)", "errors": "", "cost": 0.0078919}
+2026-01-04T16:00:30.077+0800	INFO	logger/logger.go:72	/signup	{"status": 200, "method": "POST", "path": "/signup", "query": "", "ip": "::1", "user-agent": "Apifox/1.0.0 (https://apifox.com)", "errors": "", "cost": 0.0044309}
+2026-01-04T16:03:54.106+0800	INFO	logger/logger.go:72	/signup	{"status": 200, "method": "POST", "path": "/signup", "query": "", "ip": "::1", "user-agent": "Apifox/1.0.0 (https://apifox.com)", "errors": "", "cost": 0.006931}
+2026-01-04T16:05:12.690+0800	DEBUG	iam/main.go:38	logger Init() success
+2026-01-04T16:05:14.682+0800	INFO	logger/logger.go:72	/signup	{"status": 200, "method": "POST", "path": "/signup", "query": "", "ip": "::1", "user-agent": "Apifox/1.0.0 (https://apifox.com)", "errors": "", "cost": 0.0134129}
+2026-01-04T16:15:24.428+0800	DEBUG	iam/main.go:38	logger Init() success
+2026-01-04T16:15:29.367+0800	INFO	logger/logger.go:81	/signup	{"status": 200, "method": "POST", "path": "/signup", "query": "", "ip": "::1", "user-agent": "Apifox/1.0.0 (https://apifox.com)", "errors": "", "cost": 0.0052607}
+2026-01-04T16:40:36.373+0800	DEBUG	iam/main.go:38	logger Init() success
+2026-01-04T16:41:57.478+0800	INFO	logger/logger.go:81	/login	{"status": 200, "method": "POST", "path": "/login", "query": "", "ip": "::1", "user-agent": "Apifox/1.0.0 (https://apifox.com)", "errors": "", "cost": 0.0057631}
+2026-01-04T16:43:22.935+0800	DEBUG	iam/main.go:38	logger Init() success
+2026-01-04T16:43:25.236+0800	INFO	logger/logger.go:81	/login	{"status": 200, "method": "POST", "path": "/login", "query": "", "ip": "::1", "user-agent": "Apifox/1.0.0 (https://apifox.com)", "errors": "", "cost": 0.0023037}
+2026-01-04T16:44:39.162+0800	DEBUG	iam/main.go:38	logger Init() success
+2026-01-04T16:44:48.680+0800	INFO	logger/logger.go:81	/login	{"status": 200, "method": "POST", "path": "/login", "query": "", "ip": "::1", "user-agent": "Apifox/1.0.0 (https://apifox.com)", "errors": "", "cost": 0.0033152}
+2026-01-04T16:47:44.516+0800	INFO	logger/logger.go:81	/signup	{"status": 200, "method": "POST", "path": "/signup", "query": "", "ip": "::1", "user-agent": "Apifox/1.0.0 (https://apifox.com)", "errors": "", "cost": 0.0103371}
+2026-01-04T16:47:57.257+0800	INFO	logger/logger.go:81	/login	{"status": 200, "method": "POST", "path": "/login", "query": "", "ip": "::1", "user-agent": "Apifox/1.0.0 (https://apifox.com)", "errors": "", "cost": 0.0054587}
+2026-01-04T16:48:30.366+0800	DEBUG	iam/main.go:38	logger Init() success
+2026-01-04T16:48:32.168+0800	INFO	logger/logger.go:81	/login	{"status": 200, "method": "POST", "path": "/login", "query": "", "ip": "::1", "user-agent": "Apifox/1.0.0 (https://apifox.com)", "errors": "", "cost": 0.0040077}
+2026-01-04T16:49:50.267+0800	DEBUG	iam/main.go:38	logger Init() success
+2026-01-04T16:49:53.252+0800	INFO	logger/logger.go:81	/login	{"status": 200, "method": "POST", "path": "/login", "query": "", "ip": "::1", "user-agent": "Apifox/1.0.0 (https://apifox.com)", "errors": "", "cost": 0.0025032}
+2026-01-04T20:17:13.880+0800	DEBUG	iam/main.go:38	logger Init() success
+2026-01-04T20:17:37.472+0800	DEBUG	iam/main.go:38	logger Init() success
+2026-01-04T20:17:58.552+0800	ERROR	mysql/mysql.go:26	open mysql failed	{"error": "dial tcp 192.168.168.101:3306: connectex: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond."}
+2026-01-04T20:17:58.553+0800	ERROR	iam/main.go:42	mysql Init() error mysql failed :&v
+ 	{"error": "dial tcp 192.168.168.101:3306: connectex: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond."}
+2026-01-04T20:18:50.141+0800	DEBUG	iam/main.go:38	logger Init() success
+2026-01-04T20:20:30.975+0800	INFO	logger/logger.go:81	/login	{"status": 200, "method": "POST", "path": "/login", "query": "", "ip": "::1", "user-agent": "Apifox/1.0.0 (https://apifox.com)", "errors": "", "cost": 0.0054165}
+2026-01-04T20:40:58.870+0800	DEBUG	iam/main.go:38	logger Init() success
+2026-01-04T21:26:27.104+0800	DEBUG	iam/main.go:38	logger Init() success
+2026-01-04T21:26:32.441+0800	INFO	logger/logger.go:81	/login	{"status": 200, "method": "POST", "path": "/login", "query": "", "ip": "::1", "user-agent": "Apifox/1.0.0 (https://apifox.com)", "errors": "", "cost": 0.0045404}
+2026-01-05T12:53:14.594+0800	DEBUG	iam/main.go:38	logger Init() success
+2026-01-20T21:47:48.113+0800	DEBUG	iam/main.go:38	logger Init() success
+2026-01-20T21:48:09.174+0800	ERROR	mysql/mysql.go:26	open mysql failed	{"error": "dial tcp 192.168.168.101:3306: connectex: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond."}
+2026-01-20T21:48:09.176+0800	ERROR	iam/main.go:42	mysql Init() error mysql failed :&v
+ 	{"error": "dial tcp 192.168.168.101:3306: connectex: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond."}
