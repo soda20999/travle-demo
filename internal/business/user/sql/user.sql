@@ -7,8 +7,8 @@ create table user
     password    varchar(64)                         not null,
     email       varchar(64)                         null,
     gender      tinyint   default 0                 not null,
-    create_time timestamp default CURRENT_TIMESTAMP null,
-    update_time timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
+    created_at timestamp default CURRENT_TIMESTAMP null,
+    updated_at timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
     constraint idx_user_id
         unique (user_id),
     constraint idx_username

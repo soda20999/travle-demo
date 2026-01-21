@@ -17,14 +17,14 @@ mysql:
   port: 3306
   username: "root"
   password: "Mumu.123"
-  dbname: "go_iam"
+  dbname: "travel"
 
 gorm:
   host: "192.168.168.101"
   port: 3306
   username: "root"
   password: "Mumu.123"
-  dbname: "travell"
+  dbname: "travel"
   charset: "utf8mb4"
   max_open_conns: 100
   max_idle_conns: 20

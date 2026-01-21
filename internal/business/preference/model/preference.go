@@ -20,8 +20,8 @@ type UserTravelPreference struct {
 type TravelStyle struct {
     ID          int64    `gorm:"primaryKey;autoIncrement;column:id"`
     StyleName   string    `gorm:"column:style_name;size:50;not null"`
-    CreatedTime time.Time `gorm:"column:created_time"`
-    UpdatedTime time.Time `gorm:"column:updated_time"`
+    CreatedAt   time.Time `gorm:"column:created_at"`
+    UpdatedAt   time.Time `gorm:"column:updated_at"`
 }
 
 // TableName 指定表名

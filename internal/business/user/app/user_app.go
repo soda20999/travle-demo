@@ -10,9 +10,13 @@ import (
 
 func SignUp(p *vo.ParamSignup) (Error error) {
 	//判断用户存不存在
-	err := repo.QueryUserByUserName(p.Username)
+	boo, err := repo.CheckUserExists(p.Username)
+	
 	if err != nil {
-		return err //数据库错误
+		//return err //数据库错误
+	}
+	if boo {
+		//return repo.ErrorUserExist
 	}
 
 	//生成UID

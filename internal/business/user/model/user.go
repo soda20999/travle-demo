@@ -9,8 +9,8 @@ type User struct {
 	ID        int64    `gorm:"primaryKey;autoIncrement;column:user_id" json:"user_id"`
 	Username  string    `gorm:"column:username;size:255;not null;uniqueIndex" json:"username"`
 	Password  string    `gorm:"column:password;size:255;not null" json:"password"`
-	CreatedAt time.Time `gorm:"column:created_at" json:"created_at"`
-	UpdatedAt time.Time `gorm:"column:updated_at" json:"updated_at"`
+	CreatedAt time.Time `json:"created_at" gorm:"column:created_at"`  
+    UpdatedAt time.Time `json:"updated_at" gorm:"column:updated_at"`  
 }
 
 // TableName 指定表名
