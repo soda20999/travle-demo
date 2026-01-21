@@ -1,16 +1,17 @@
+// d:/go/project/iam/internal/business/user/repo/user.go
 package repo
 
 import (
 	"crypto/md5"
-	"database/sql"
 	"encoding/hex"
 	"errors"
 
 	"iam/internal/business/user/domin/dto"
-	"iam/internal/pkg/config/mysql"
+	"iam/internal/business/user/model"
+	"iam/internal/pkg/config/gorm"
 )
 
-const scretKey = "mumu.123.com"
+const secretKey = "mumu.123.com"
 
 var (
 	ErrorUserExist       = errors.New("用户已存在")
@@ -19,53 +20,56 @@ var (
 )
 
 // QueryUserByUserName 检查用户是否存在
-func QueryUserByUserName(Username string) error {
-	sqlString := "select count(user_id) from user where username=?"
-	var count int
-	if error := mysql.Db.Get(&count, sqlString, Username); error != nil {
-		return error
+func QueryUserByUserName(username string) error {
+	var user model.User
+	result := gorm.Db.Where("username = ?", username).First(&user)
+	
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return nil // 用户不存在，不是错误
+		}
+		return result.Error // 数据库错误
 	}
-	if count > 0 {
-		return ErrorUserExist
-	}
-	return nil
+	
+	return ErrorUserExist // 用户已存在
 }
 
 // InsertUser 插入用户信息
 func InsertUser(user dto.User) error {
-	user.Password = encryptPassword(user.Password)
-
-	sqlString := "insert into user(user_id,username,password) values(?,?,?)"
-	_, err := mysql.Db.Exec(sqlString, user.UserID, user.Username, user.Password)
-	if err != nil {
-		return err
-	}
-	return nil
+	modelUser := user.ToModel()
+	modelUser.Password = encryptPassword(modelUser.Password)
+	
+	result := gorm.Db.Create(modelUser)
+	return result.Error
 }
 
 // Login 根据用户名和密码登录
 func Login(user *dto.User) (err error) {
-	opassowrd := user.Password
-	sqlString := "select user_id,username,password from user where username=?"
-	err = mysql.Db.Get(user, sqlString, user.Username)
-	if err == sql.ErrNoRows {
-		return ErrorUserNotExist
-	}
-	if err != nil {
-		return err //数据库错误
+	var modelUser model.User
+	result := gorm.Db.Where("username = ?", user.Username).First(&modelUser)
+	
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return ErrorUserNotExist
+		}
+		return result.Error // 数据库错误
 	}
 
-	//验证密码是否错误
-	password := encryptPassword(opassowrd)
-	if password != user.Password {
+	// 验证密码是否错误
+	password := encryptPassword(user.Password)
+	if password != modelUser.Password {
 		return ErrorInvalidPassword
 	}
+	
+	// 更新 DTO 信息
+	user.UserID = modelUser.ID
+	user.Password = modelUser.Password
+	
 	return nil
 }
 
-func encryptPassword(opassword string) string {
+func encryptPassword(password string) string {
 	h := md5.New()
-	h.Write([]byte(opassword + scretKey))
-	return hex.EncodeToString(h.Sum([]byte(opassword)))
+	h.Write([]byte(password + secretKey))
+	return hex.EncodeToString(h.Sum([]byte(password)))
 }
-

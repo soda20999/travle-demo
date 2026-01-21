@@ -18,6 +18,9 @@ func Setup() *gin.Engine {
 	r.POST("/signup", api.SignHandler)
 	r.POST("/login", api.LoginHandler)
 
+	//2.用户偏好路由
+	
+
 	//使用JWT中间件保护需要认证的路由
 	r.GET("/home", middlewares.JWTAuthMiddleware(), middlewares.HomeHandler)
 	r.POST("/refresh_token", api.RefreshTokenHandler)

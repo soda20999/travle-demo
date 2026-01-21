@@ -12,6 +12,7 @@ const (
 	CodeTokenHeaderEmpty                         //请求头中Token为空
 	CodeTokenInvalidFormat                       //请求头中Token格式有误
 	CodeTokenInvalid                             //无效的Token
+    CodeNeedLogin							     //需要登录
 )
 
 var codeMsgMap = map[ResCode]string{

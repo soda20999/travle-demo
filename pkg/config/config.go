@@ -21,6 +21,7 @@ type AppConfig struct {
 
 	*LogConfig   `mapstructure:"log"`
 	*MySQLConfig `mapstructure:"mysql"`
+	*GormConfig  `mapstructure:"gorm"`
 	*RedisConfig `mapstructure:"redis"`
 }
 
@@ -38,6 +39,18 @@ type MySQLConfig struct {
 	Username string `mapstructure:"username"`
 	Password string `mapstructure:"password"`
 	DBName   string `mapstructure:"dbname"`
+}
+
+type GormConfig struct {
+	Host         string `mapstructure:"host"`
+	Port         int    `mapstructure:"port"`
+	Username     string `mapstructure:"username"`
+	Password     string `mapstructure:"password"`
+	DBName       string `mapstructure:"dbname"`
+	Charset      string `mapstructure:"charset"`
+	MaxOpenConns int    `mapstructure:"max_open_conns"`
+	MaxIdleConns int    `mapstructure:"max_idle_conns"`
+	LogLevel     string `mapstructure:"log_level"`
 }
 
 type RedisConfig struct {

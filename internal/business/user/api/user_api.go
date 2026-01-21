@@ -73,5 +73,5 @@ func LoginHandler(c *gin.Context) {
 	}
 
 	//4.返回响应
-	response.ResponseSuccess(atoken, c)
+	response.ResponseSuccess(c, atoken)
 }

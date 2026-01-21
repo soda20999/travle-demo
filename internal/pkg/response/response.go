@@ -28,7 +28,8 @@ func ResponseError(code ResCode, c *gin.Context) {
 	})
 }
 
-func ResponseSuccess(data interface{}, c *gin.Context) {
+// 参数顺序：context 在前，data 在后
+func ResponseSuccess(c *gin.Context, data interface{}) {
 	c.JSON(http.StatusOK, &Response{
 		Code:    CodeSuccess,
 		Message: getMsg(CodeSuccess),

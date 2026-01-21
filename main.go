@@ -9,6 +9,7 @@ import (
 	"syscall"
 	"time"
 
+	"iam/internal/pkg/config/gorm"
 	"iam/internal/pkg/config/logger"
 	"iam/internal/pkg/config/mysql"
 	"iam/internal/pkg/config/redis"
@@ -50,6 +51,13 @@ func main() {
 		return
 	}
 	defer redis.Close()
+
+	//初始化gorm
+	if err := gorm.InitGorm(); err != nil {
+		zap.L().Error("gorm Init() error gorm failed :&v\n ", zap.Error(err))
+		return
+	}
+	defer gorm.Close()
 
 	if err := snowflake.Init(config.Conf.StartTime, config.Conf.MachineId); err != nil {
 		zap.L().Error("snowflake Init() error snowflake failed :&v\n ", zap.Error(err))

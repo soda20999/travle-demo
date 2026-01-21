@@ -19,6 +19,17 @@ mysql:
   password: "Mumu.123"
   dbname: "go_iam"
 
+gorm:
+  host: "192.168.168.101"
+  port: 3306
+  username: "root"
+  password: "Mumu.123"
+  dbname: "travell"
+  charset: "utf8mb4"
+  max_open_conns: 100
+  max_idle_conns: 20
+  log_level: "info"
+
 redis:
   host: "192.168.168.101"
   port: 6379

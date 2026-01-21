@@ -25,8 +25,8 @@ func RefreshTokenHandler(c *gin.Context) {
 		return
 	}
 
-	response.ResponseSuccess(gin.H{
+	response.ResponseSuccess(c,gin.H{
 		"access_token":  newAToken,
 		"refresh_token": newRToken,
-	}, c)
+	})
 }
