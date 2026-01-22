@@ -77,3 +77,52 @@ func encryptPassword(password string) string {
 	h.Write([]byte(password + secretKey))
 	return hex.EncodeToString(h.Sum([]byte(password)))
 }
+
+// 更新用户昵称
+func UpdateUserNickname(userID int64, nickname string) error {
+    result := gorm.Db.Model(&model.User{}).
+        Where("user_id = ?", userID).
+        Update("nickname", nickname)
+    
+    if result.Error != nil {
+        return result.Error
+    }
+    
+    if result.RowsAffected == 0 {
+        return errors.New("用户不存在")
+    }
+    
+    return nil
+}
+
+// 更新用户头像
+func UpdateUserAvatar(userID int64, avatarURL string) error {
+    result := gorm.Db.Model(&model.User{}).
+        Where("user_id = ?", userID).
+        Update("avatar_url", avatarURL)
+    
+    if result.Error != nil {
+        return result.Error
+    }
+    
+    if result.RowsAffected == 0 {
+        return errors.New("用户不存在")
+    }
+    
+    return nil
+}
+
+// 根据用户ID查询用户信息
+func GetUserByID(userID int64) (*model.User, error) {
+    var user model.User
+    result := gorm.Db.Where("user_id = ?", userID).First(&user)
+    
+    if result.Error != nil {
+        if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+            return nil, errors.New("用户不存在")
+        }
+        return nil, result.Error
+    }
+    
+    return &user, nil
+}

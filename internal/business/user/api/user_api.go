@@ -75,3 +75,72 @@ func LoginHandler(c *gin.Context) {
 	//4.返回响应
 	response.ResponseSuccess(c, atoken)
 }
+
+// 更新用户昵称的处理器
+func UpdateNicknameHandler(c *gin.Context) {
+    p := new(vo.ParamUpdateNickname)
+    
+    if err := c.ShouldBindJSON(p); err != nil {
+        zap.L().Error("UpdateNicknameHandler ShouldBindJSON error:", zap.Error(err))
+        validationErrors, ok := err.(vd.ValidationErrors)
+        if !ok {
+            response.ResponseError(response.CodeInvalidParams, c)
+            return
+        }
+        
+        response.ResponseErrorWithMsg(validator.RemoveTopStruct(validationErrors.Translate(validator.Trans)), c)
+        return
+    }
+    
+    if err := app.UpdateNickname(p); err != nil {
+        zap.L().Error("UpdateNicknameHandler update nickname error:", zap.Error(err))
+        response.ResponseError(response.CodeServerBusy, c)
+        return
+    }
+    
+    response.ResponseSuccess(nil, c)
+}
+
+// 更新用户头像的处理器
+func UpdateAvatarHandler(c *gin.Context) {
+    p := new(vo.ParamUpdateAvatar)
+    
+    if err := c.ShouldBindJSON(p); err != nil {
+        zap.L().Error("UpdateAvatarHandler ShouldBindJSON error:", zap.Error(err))
+        validationErrors, ok := err.(vd.ValidationErrors)
+        if !ok {
+            response.ResponseError(response.CodeInvalidParams, c)
+            return
+        }
+        
+        response.ResponseErrorWithMsg(validator.RemoveTopStruct(validationErrors.Translate(validator.Trans)), c)
+        return
+    }
+    
+    if err := app.UpdateAvatar(p); err != nil {
+        zap.L().Error("UpdateAvatarHandler update avatar error:", zap.Error(err))
+        response.ResponseError(response.CodeServerBusy, c)
+        return
+    }
+    
+    response.ResponseSuccess(nil, c)
+}
+
+// 获取用户信息的处理器
+func GetUserInfoHandler(c *gin.Context) {
+    // 假设从 JWT token 中获取用户ID
+    userID, exists := c.Get("userID") // 这里需要根据你的 JWT 实现调整
+    if !exists {
+        response.ResponseError(response.CodeNeedLogin, c)
+        return
+    }
+    
+    userInfo, err := app.GetUserInfo(userID.(int64))
+    if err != nil {
+        zap.L().Error("GetUserInfoHandler get user info error:", zap.Error(err))
+        response.ResponseError(response.CodeServerBusy, c)
+        return
+    }
+    
+    response.ResponseSuccess(c, userInfo)
+}

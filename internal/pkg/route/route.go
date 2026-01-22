@@ -25,7 +25,12 @@ func Setup() *gin.Engine {
 	r.GET("/preferences/:user_id", middlewares.JWTAuthMiddleware(), preference_api.GetPreferenceHandler)
 	r.DELETE("/preferences/:preferred_id", middlewares.JWTAuthMiddleware(), preference_api.DeletePreferenceHandler)
 	r.GET("/travel-styles", preference_api.GetAllTravelStylesHandler) // 这个可以公开访问
+	
 
+	// 在你的路由配置文件中
+    r.POST("/user/update-nickname", middlewares.JWTAuthMiddleware(), user_api.UpdateNicknameHandler)
+    r.POST("/user/update-avatar", middlewares.JWTAuthMiddleware(), user_api.UpdateAvatarHandler)
+    r.GET("/user/info", middlewares.JWTAuthMiddleware(), user_api.GetUserInfoHandler)
 
 
 	//使用JWT中间件保护需要认证的路由

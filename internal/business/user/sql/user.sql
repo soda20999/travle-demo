@@ -6,7 +6,8 @@ create table user
     username    varchar(64)                         not null,
     password    varchar(64)                         not null,
     email       varchar(64)                         null,
-    gender      tinyint   default 0                 not null,
+    nickname    varchar(64)                         null,
+    avatar_url  varchar(256)                        null,
     created_at timestamp default CURRENT_TIMESTAMP null,
     updated_at timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
     constraint idx_user_id
