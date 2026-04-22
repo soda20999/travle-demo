@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  postgres:
+  # 注意：在 YAML 中，长字符串建议用双引号包裹，防止特殊字符干扰
+    dsn: "postgresql://neondb_owner:npg_bfF67qShuMZv@ep-lingering-term-a4zdc2i2-pooler.us-east-1.aws.neon.tech/vchat?sslmode=require"
+    max_open_conns: 10
+    max_idle_conns: 5
+    log_level: "info"
+
+  redis:
+    image: redis:7-alpine
+    container_name: travel-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    # build: .
+    image: travel-app:latest
+    container_name: travel-app
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      # 挂载配置文件目录（宿主机 ./configs -> 容器 /app/configs）
+      - ./configs:/app/configs
+      # 可选：挂载日志目录，让日志文件持久化到宿主机
+      - ./logs:/app/logs
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      - TZ=Asia/Shanghai
+
+volumes:
+  mysql_data:
+  redis_data:
