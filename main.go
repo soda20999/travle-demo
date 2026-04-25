@@ -13,6 +13,7 @@ import (
 	"iam/internal/business/discover"
 	"iam/internal/business/footprint"
 	"iam/internal/business/preference"
+	"iam/internal/business/recognize"
 	"iam/internal/business/user"
 	cfggorm "iam/internal/pkg/config/gorm"
 	"iam/internal/pkg/config/logger"
@@ -68,6 +69,7 @@ func main() {
 		&footprint.Footprint{},
 		&ar.ARScan{},
 		&ar.ARScanResult{},
+		&recognize.AttractionImage{},
 	); err != nil {
 		zap.L().Error("postgresql automigrate failed", zap.Error(err))
 		return
@@ -83,6 +85,7 @@ func main() {
 		&footprint.Footprint{},
 		&ar.ARScan{},
 		&ar.ARScanResult{},
+		&recognize.AttractionImage{},
 	); err != nil {
 		zap.L().Error("gorm automigrate failed", zap.Error(err))
 		return

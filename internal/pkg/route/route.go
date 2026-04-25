@@ -5,6 +5,7 @@ import (
 	discover_api "iam/internal/business/discover"
 	footprint_api "iam/internal/business/footprint"
 	preference_api "iam/internal/business/preference"
+	rec_api "iam/internal/business/recognize"
 	user_api "iam/internal/business/user"
 	"iam/internal/pkg/config/logger"
 	"iam/internal/pkg/middlewares"
