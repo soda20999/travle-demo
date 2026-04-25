@@ -84,6 +84,16 @@ func Setup() *gin.Engine {
 			ar.POST("", ar_api.CreateARScanHandler)
 		}
 
+		auth.POST("/recognize", rec_api.RecognizeHandler)
+
+		gallery := auth.Group("/gallery")
+		{
+			gallery.POST("/images", rec_api.AddGalleryImageHandler)
+			gallery.DELETE("/images/:id", rec_api.DeleteGalleryImageHandler)
+			gallery.GET("/attractions/:id/images", rec_api.GetGalleryImagesHandler)
+			gallery.POST("/rebuild-index", rec_api.RebuildIndexHandler)
+		}
+
 		auth.GET("/home", middlewares.HomeHandler)
 	}
 

@@ -1,9 +1,25 @@
-version: "3.8"
-
 services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: travle-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: travle
+      POSTGRES_PASSWORD: travle
+      POSTGRES_DB: travle
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U travle"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   redis:
-    image: redis:7-bookworm
-    container_name: travel-redis
+    image: redis:7-alpine
+    container_name: travle-redis
     restart: unless-stopped
     ports:
       - "6379:6379"
@@ -15,23 +31,42 @@ services:
       timeout: 5s
       retries: 5
 
+  recognizer:
+    build: ./services/recognizer
+    container_name: travle-recognizer
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./services/recognizer/models:/app/models:ro
+      - faiss_data:/app/data
+    environment:
+      DATABASE_URL: "postgresql://travle:travle@postgres:5432/travle"
+      MODEL_DIR: "/app/models"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
   app:
-    build:
-      context: .
-      dockerfile: DOCKERFILE
-    image: travel-app:latest
-    container_name: travel-app
+    build: .
+    container_name: travle-app
     restart: unless-stopped
     ports:
       - "8080:8080"
     volumes:
       - ./configs:/app/configs
       - ./logs:/app/logs
+    environment:
+      TZ: Asia/Shanghai
     depends_on:
+      postgres:
+        condition: service_healthy
       redis:
         condition: service_healthy
-    environment:
-      - TZ=Asia/Shanghai
+      recognizer:
+        condition: service_started
 
 volumes:
+  pg_data:
   redis_data:
+  faiss_data:
