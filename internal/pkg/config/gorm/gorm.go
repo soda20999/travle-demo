@@ -6,6 +6,7 @@ import (
 	ar_model "iam/internal/business/ar/model"
 	"iam/internal/business/discover/model"
 	foot_model "iam/internal/business/footprint/model"
+	rec_model "iam/internal/business/recognize/model"
 	pref_model "iam/internal/business/preference/model"
 	user_model "iam/internal/business/user/model"
 	"iam/pkg/config"
@@ -78,6 +79,7 @@ func InitGorm() (err error) {
 		&model.City{},
 		&model.Attraction{},
 		&foot_model.Footprint{},
+		&rec_model.AttractionImage{},
 	); err != nil {
 		log.Printf("AutoMigrate 失败: %v", err)
 		return err

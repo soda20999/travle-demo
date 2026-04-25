@@ -20,9 +20,10 @@ type AppConfig struct {
 	MachineId int64  `mapstructure:"machine_id"`
 	
 
-	*LogConfig      `mapstructure:"log"`
+	*LogConfig        `mapstructure:"log"`
 	*PostgreSQLConfig `mapstructure:"postgres"`
-	*RedisConfig    `mapstructure:"redis"`
+	*RedisConfig      `mapstructure:"redis"`
+	*RecognizerConfig `mapstructure:"recognizer"`
 }
 
 type LogConfig struct {
@@ -46,6 +47,10 @@ type RedisConfig struct {
 	DB         int    `mapstructure:"db"`
 	PoolSize   int    `mapstructure:"pool_size"`
 	MaxRetries int    `mapstructure:"max_retries"`
+}
+
+type RecognizerConfig struct {
+	BaseURL string `mapstructure:"base_url"`
 }
 
 func Init() (err error) {

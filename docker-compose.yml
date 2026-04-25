@@ -1,47 +1,72 @@
-version: '3.8'
-
 services:
   postgres:
-  # 注意：在 YAML 中，长字符串建议用双引号包裹，防止特殊字符干扰
-    dsn: "postgresql://neondb_owner:npg_bfF67qShuMZv@ep-lingering-term-a4zdc2i2-pooler.us-east-1.aws.neon.tech/vchat?sslmode=require"
-    max_open_conns: 10
-    max_idle_conns: 5
-    log_level: "info"
+    image: postgres:16-alpine
+    container_name: travle-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: travle
+      POSTGRES_PASSWORD: travle
+      POSTGRES_DB: travle
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U travle"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   redis:
     image: redis:7-alpine
-    container_name: travel-redis
+    container_name: travle-redis
     restart: unless-stopped
     ports:
       - "6379:6379"
     volumes:
       - redis_data:/data
     healthcheck:
-      test: [ "CMD", "redis-cli", "ping" ]
+      test: ["CMD", "redis-cli", "ping"]
       interval: 10s
       timeout: 5s
       retries: 5
 
+  recognizer:
+    build: ./services/recognizer
+    container_name: travle-recognizer
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./services/recognizer/models:/app/models:ro
+      - faiss_data:/app/data
+    environment:
+      DATABASE_URL: "postgresql://travle:travle@postgres:5432/travle"
+      MODEL_DIR: "/app/models"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
   app:
-    # build: .
-    image: travel-app:latest
-    container_name: travel-app
+    build: .
+    container_name: travle-app
     restart: unless-stopped
     ports:
       - "8080:8080"
     volumes:
-      # 挂载配置文件目录（宿主机 ./configs -> 容器 /app/configs）
       - ./configs:/app/configs
-      # 可选：挂载日志目录，让日志文件持久化到宿主机
       - ./logs:/app/logs
+    environment:
+      TZ: Asia/Shanghai
     depends_on:
-      mysql:
+      postgres:
         condition: service_healthy
       redis:
         condition: service_healthy
-    environment:
-      - TZ=Asia/Shanghai
+      recognizer:
+        condition: service_started
 
 volumes:
-  mysql_data:
+  pg_data:
   redis_data:
+  faiss_data:
