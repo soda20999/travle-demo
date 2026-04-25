@@ -1,7 +1,7 @@
-package model
+package footprint
 
 import (
-    "iam/internal/business/discover/model"
+     "iam/internal/business/discover"
     "time"
 )
 
@@ -13,7 +13,7 @@ type Footprint struct {
     CreatedAt    time.Time         `gorm:"column:created_at"`
     UpdatedAt    time.Time         `gorm:"column:updated_at"`
 
-    Attraction *model.Attraction `gorm:"foreignKey:AttractionID"`
+    Attraction *discover.Attraction `gorm:"foreignKey:AttractionID"`
 }
 
 func (Footprint) TableName() string {

@@ -1,14 +1,28 @@
-# 构建阶段
-FROM golang:1.26-alpine AS builder
+FROM golang:1.25-bookworm AS builder
+
 WORKDIR /app
+
 COPY go.mod go.sum ./
 RUN go mod download
-COPY . .
-RUN go build -o myapp .
 
-# 运行阶段
-FROM alpine:latest
+COPY . .
+
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o app .
+
+FROM debian:bookworm-slim
+
 WORKDIR /app
-COPY --from=builder /app/myapp .
+
+ENV TZ=Asia/Shanghai
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    tzdata \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY --from=builder /app/app /app/app
+COPY --from=builder /app/configs /app/configs
+
 EXPOSE 8080
-CMD ["./myapp"]
+
+CMD ["/app/app"]

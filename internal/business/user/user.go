@@ -1,5 +1,4 @@
-// d:/go/project/iam/internal/business/user/model/user.go
-package model
+package user
 
 import (
 	"time"

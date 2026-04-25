@@ -1,12 +1,11 @@
 package route
 
 import (
-	ar_api "iam/internal/business/ar/api"
-	discover_api "iam/internal/business/discover/api"
-	footprint_api "iam/internal/business/footprint/api"
-	preference_api "iam/internal/business/preference/api"
-	rec_api "iam/internal/business/recognize/api"
-	user_api "iam/internal/business/user/api"
+	ar_api "iam/internal/business/ar"
+	discover_api "iam/internal/business/discover"
+	footprint_api "iam/internal/business/footprint"
+	preference_api "iam/internal/business/preference"
+	user_api "iam/internal/business/user"
 	"iam/internal/pkg/config/logger"
 	"iam/internal/pkg/middlewares"
 	"net/http"

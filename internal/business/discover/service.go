@@ -1,22 +1,20 @@
-package discover_service
+package discover
 
 import (
-
-	"iam/internal/business/discover/model"
 	"iam/internal/pkg/config/postsql"
 
 )
 
 // GetAllProvinces 获取所有省份
-func GetAllProvinces() ([]model.Province, error) {
-	var provinces []model.Province
+func GetAllProvinces() ([]Province, error) {
+	var provinces []Province
 	err := postgresql.DB.Find(&provinces).Error
 	return provinces, err
 }
 
 // GetProvinceByID 根据ID获取省份
-func GetProvinceByID(id int64) (*model.Province, error) {
-	var province model.Province
+func GetProvinceByID(id int64) (*Province, error) {
+	var province Province
 	err := postgresql.DB.Where("id = ?", id).First(&province).Error
 	if err != nil {
 		return nil, err
@@ -25,8 +23,8 @@ func GetProvinceByID(id int64) (*model.Province, error) {
 }
 
 // GetProvinceWithCities 获取省份及其关联的城市
-func GetProvinceWithCities(provinceID int64) (*model.Province, error) {
-	var province model.Province
+func GetProvinceWithCities(provinceID int64) (*Province, error) {
+	var province Province
 	err := postgresql.DB.Preload("Cities").Where("id = ?", provinceID).First(&province).Error
 	if err != nil {
 		return nil, err
@@ -42,15 +40,15 @@ func GetProvinceWithCities(provinceID int64) (*model.Province, error) {
 }
 
 // GetCitiesByProvinceID 根据省份ID获取城市列表（预加载省份信息）
-func GetCitiesByProvinceID(provinceID int64) ([]model.City, error) {
-	var cities []model.City
+func GetCitiesByProvinceID(provinceID int64) ([]City, error) {
+	var cities []City
 	err := postgresql.DB.Preload("Province").Where("province_id = ?", provinceID).Find(&cities).Error
 	return cities, err
 }
 
 // GetCityByID 根据ID获取城市（预加载省份）
-func GetCityByID(id int64) (*model.City, error) {
-	var city model.City
+func GetCityByID(id int64) (*City, error) {
+	var city City
 	err := postgresql.DB.Preload("Province").Where("id = ?", id).First(&city).Error
 	if err != nil {
 		return nil, err
@@ -59,8 +57,8 @@ func GetCityByID(id int64) (*model.City, error) {
 }
 
 // GetCityWithAttractions 获取城市及其关联的景点（预加载景点和景点的城市信息）
-func GetCityWithAttractions(cityID int64) (*model.City, error) {
-	var city model.City
+func GetCityWithAttractions(cityID int64) (*City, error) {
+	var city City
 	err := postgresql.DB.Preload("Province").
 		Preload("Attractions.City.Province").
 		Where("id = ?", cityID).
@@ -72,15 +70,15 @@ func GetCityWithAttractions(cityID int64) (*model.City, error) {
 }
 
 // GetAttractionsByCityID 根据城市ID获取景点列表（预加载城市和省份）
-func GetAttractionsByCityID(cityID int64) ([]model.Attraction, error) {
-	var attractions []model.Attraction
+func GetAttractionsByCityID(cityID int64) ([]Attraction, error) {
+	var attractions []Attraction
 	err := postgresql.DB.Preload("City.Province").Where("city_id = ?", cityID).Find(&attractions).Error
 	return attractions, err
 }
 
 // GetAttractionByID 根据ID获取景点（预加载城市和省份）
-func GetAttractionByID(id int64) (*model.Attraction, error) {
-	var attraction model.Attraction
+func GetAttractionByID(id int64) (*Attraction, error) {
+	var attraction Attraction
 	err := postgresql.DB.Preload("City.Province").Where("id = ?", id).First(&attraction).Error
 	if err != nil {
 		return nil, err

@@ -1,12 +1,9 @@
-package api
+package ar
 
 import (
 	"encoding/json"
 	"net/http"
 	"strconv"
-
-	ar_model "iam/internal/business/ar/model"
-	ar_service "iam/internal/business/ar/service"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/datatypes"
@@ -28,16 +25,16 @@ func CreateARScanHandler(c *gin.Context) {
 		return
 	}
 
-	scan := ar_model.ARScan{
+	scan := ARScan{
 		UserID:   uid.(int64),
 		ImageURL: req.ImageURL,
-		Status:   ar_model.ARScanStatusProcessing,
+		Status:   ARScanStatusProcessing,
 	}
 	if len(req.Metadata) > 0 {
 		scan.Metadata = datatypes.JSON(req.Metadata)
 	}
 
-	if err := ar_service.CreateARScan(&scan); err != nil {
+	if err := CreateARScan(&scan); err != nil {
 		c.JSON(http.StatusOK, gin.H{"code": 10002, "msg": "服务器繁忙"})
 		return
 	}
@@ -62,7 +59,7 @@ func GetARScansHandler(c *gin.Context) {
 		return
 	}
 
-	scans, err := ar_service.GetARScansByUserID(uid.(int64))
+	scans, err := GetARScansByUserID(uid.(int64))
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"code": 10002, "msg": "服务器繁忙"})
 		return
@@ -84,7 +81,7 @@ func GetARScanByIDHandler(c *gin.Context) {
 		return
 	}
 
-	scan, err := ar_service.GetARScanByID(scanID)
+	scan, err := GetARScanByID(scanID)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"code": 10002, "msg": "服务器繁忙"})
 		return
