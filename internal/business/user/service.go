@@ -1,7 +1,5 @@
-package user_service
-
+package user
 import (
-     "iam/internal/business/user/model"
 	 "iam/internal/pkg/config/postsql"
 	 "errors"
 	 "golang.org/x/crypto/bcrypt"
@@ -9,7 +7,7 @@ import (
 )
 
 // SignUp 注册：包含密码加密逻辑
-func SignUp(u *model.User) error {
+func SignUp(u *User) error {
 	// 1. 将明文密码加密
 	hash, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)
 	if err != nil {
@@ -22,8 +20,8 @@ func SignUp(u *model.User) error {
 }
 
 // Login 登录：比对密码并返回用户信息
-func Login(username, password string) (*model.User, error) {
-	var u model.User
+func Login(username, password string) (*User, error) {
+	var u User
 	// 1. 根据用户名查找用户
 	err := postgresql.DB.Where("username = ?", username).First(&u).Error
 	if err != nil {
@@ -44,11 +42,11 @@ func Login(username, password string) (*model.User, error) {
 
 // UpdateUser 直接按 ID 更新任意字段 (利用 PG 的局部更新特性)
 func UpdateUser(userID int64, data map[string]interface{}) error {
-	return postgresql.DB.Model(&model.User{}).Where("user_id = ?", userID).Updates(data).Error
+	return postgresql.DB.Model(&User{}).Where("user_id = ?", userID).Updates(data).Error
 }
 
 // GetUserInfo 获取信息 (去 DTO 化：直接返回 Model)
-func GetUserInfo(userID int64) (u model.User, err error) {
+func GetUserInfo(userID int64) (u User, err error) {
 	err = postgresql.DB.Where("user_id = ?", userID).First(&u).Error
 	return
 }
