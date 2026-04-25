@@ -1,6 +1,7 @@
 package postgresql
 
 import (
+	ar_model "iam/internal/business/ar/model"
 	discover "iam/internal/business/discover/model"
 	"iam/pkg/config" // 替换为你实际的配置包路径
 
@@ -29,6 +30,8 @@ func Init(cfg *config.PostgreSQLConfig) (err error) {
 	// 【低代码/无 DTO 关键】在此处注册模型，系统启动自动建表/同步字段
 	// 以后新增模型只需往这里一塞，不需要写迁移脚本，也不用写 DTO
 	err = DB.AutoMigrate(
+		&ar_model.ARScan{},
+		&ar_model.ARScanResult{},
 		&discover.Province{},
 		&discover.City{},
 		&discover.Attraction{},
