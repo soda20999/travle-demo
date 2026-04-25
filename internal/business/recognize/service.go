@@ -1,5 +1,6 @@
 package recognize
 
+
 import (
 	"bytes"
 	"encoding/json"
@@ -10,8 +11,8 @@ import (
 	"net/http"
 	"time"
 
-	"iam/internal/business/discover"
 	postgresql "iam/internal/pkg/config/postsql"
+	dicover "iam/internal/business/discover"
 	"iam/pkg/config"
 
 	"gorm.io/gorm"
@@ -23,7 +24,7 @@ func CreateAttractionImage(img *AttractionImage) error {
 	if err := postgresql.DB.Create(img).Error; err != nil {
 		return err
 	}
-	if err := indexAdd(img.ID, img.ImagePath); err != nil {
+	if err := indexAdd(img.ID, img.ImageURL); err != nil {
 		postgresql.DB.Delete(img)
 		return fmt.Errorf("index add failed: %w", err)
 	}
@@ -71,8 +72,8 @@ type PredictResult struct {
 }
 
 type RecognizeResult struct {
-	Attraction discover.Attraction `json:"attraction"`
-	Similarity float64             `json:"similarity"`
+	Attraction dicover.Attraction `json:"attraction"`
+	Similarity float64                   `json:"similarity"`
 }
 
 func Recognize(fileHeader *multipart.FileHeader, topK int) ([]RecognizeResult, error) {
@@ -101,11 +102,11 @@ func Recognize(fileHeader *multipart.FileHeader, topK int) ([]RecognizeResult, e
 		attractionIDs = append(attractionIDs, img.AttractionID)
 	}
 
-	var attractions []discover.Attraction
+	var attractions []dicover.Attraction
 	if err := postgresql.DB.Where("id IN ?", attractionIDs).Find(&attractions).Error; err != nil {
 		return nil, err
 	}
-	attractionMap := make(map[int64]discover.Attraction)
+	attractionMap := make(map[int64]dicover.Attraction)
 	for _, a := range attractions {
 		attractionMap[a.ID] = a
 	}
@@ -178,11 +179,11 @@ func callPredict(fileHeader *multipart.FileHeader, topK int) ([]PredictResult, e
 	return result.Results, nil
 }
 
-func indexAdd(imageID int64, imagePath string) error {
+func indexAdd(imageID int64, imageURL string) error {
 	baseURL := config.Conf.RecognizerConfig.BaseURL
 	body, _ := json.Marshal(map[string]interface{}{
-		"image_id":   imageID,
-		"image_path": imagePath,
+		"image_id":  imageID,
+		"image_url": imageURL,
 	})
 	resp, err := recognizerClient.Post(baseURL+"/index/add", "application/json", bytes.NewReader(body))
 	if err != nil {

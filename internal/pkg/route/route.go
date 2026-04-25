@@ -7,6 +7,7 @@ import (
 	preference_api "iam/internal/business/preference"
 	rec_api "iam/internal/business/recognize"
 	user_api "iam/internal/business/user"
+	rec_api "iam/internal/business/recognize"
 	"iam/internal/pkg/config/logger"
 	"iam/internal/pkg/middlewares"
 	"net/http"

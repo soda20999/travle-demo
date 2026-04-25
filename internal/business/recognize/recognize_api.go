@@ -1,8 +1,10 @@
 package recognize
 
+
 import (
 	"net/http"
 	"strconv"
+
 
 	"github.com/gin-gonic/gin"
 )
@@ -37,7 +39,7 @@ func RecognizeHandler(c *gin.Context) {
 func AddGalleryImageHandler(c *gin.Context) {
 	var req struct {
 		AttractionID int64  `json:"attraction_id" binding:"required"`
-		ImagePath    string `json:"image_path" binding:"required"`
+		ImageURL     string `json:"image_url" binding:"required"`
 	}
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusOK, gin.H{"code": 10001, "msg": "参数错误"})
@@ -46,7 +48,7 @@ func AddGalleryImageHandler(c *gin.Context) {
 
 	img := AttractionImage{
 		AttractionID: req.AttractionID,
-		ImagePath:    req.ImagePath,
+		ImageURL:     req.ImageURL,
 	}
 	if err := CreateAttractionImage(&img); err != nil {
 		c.JSON(http.StatusOK, gin.H{"code": 10002, "msg": "添加失败"})
@@ -58,7 +60,7 @@ func AddGalleryImageHandler(c *gin.Context) {
 		"data": gin.H{
 			"id":            img.ID,
 			"attraction_id": img.AttractionID,
-			"image_path":    img.ImagePath,
+			"image_url":     img.ImageURL,
 			"created_at":    img.CreatedAt,
 		},
 		"msg": "success",
