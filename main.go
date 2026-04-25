@@ -11,8 +11,8 @@ import (
 
 	"iam/internal/pkg/config/gorm"
 	"iam/internal/pkg/config/logger"
+	postgresql "iam/internal/pkg/config/postsql"
 	"iam/internal/pkg/config/redis"
-	"iam/internal/pkg/config/postsql"
 	"iam/internal/pkg/route"
 	"iam/internal/pkg/validator"
 	"iam/pkg/config"
@@ -39,11 +39,12 @@ func main() {
 	zap.L().Debug("logger Init() success") //全局使用logger记录日志格式，zap.L()即可
 
 	// 3. 初始化 PostgreSQL (模仿你的 Redis 风格)
-    if err := postgresql.Init(config.Conf.PostgreSQLConfig); err != nil {
+	if err := postgresql.Init(config.Conf.PostgreSQLConfig); err != nil {
 		fmt.Printf("加载的配置 DSN: %s\n", config.Conf.PostgreSQLConfig.DSN)
-        zap.L().Error("postgresql Init() failed", zap.Error(err))
-        return
-    }
+		zap.L().Error("postgresql Init() failed", zap.Error(err))
+		return
+	}
+	defer postgresql.Close()
 
 	//初始化redis
 	if err := redis.Init(config.Conf.RedisConfig); err != nil {
