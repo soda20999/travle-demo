@@ -1,4 +1,4 @@
-package model
+package discover
 
 import (
     "time"

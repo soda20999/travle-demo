@@ -1,20 +1,18 @@
-package api
+package user
 
 import (
     "github.com/gin-gonic/gin"
-    "iam/internal/business/user/model"
-    "iam/internal/business/user/service"
     "net/http"
 	"iam/internal/pkg/jwt"
 )
 // 1. 注册 (POST /signup)
 func SignHandler(c *gin.Context) {
-	var u model.User
+	var u User
 	if err := c.ShouldBindJSON(&u); err != nil {
 		c.JSON(http.StatusOK, gin.H{"code": 10001, "msg": "参数错误"})
 		return
 	}
-	if err := user_service.SignUp(&u); err != nil {
+	if err := SignUp(&u); err != nil {
 		c.JSON(http.StatusOK, gin.H{"code": 10004, "msg": "用户已存在或服务器繁忙"})
 		return
 	}
@@ -22,13 +20,13 @@ func SignHandler(c *gin.Context) {
 }
 
 func LoginHandler(c *gin.Context) {
-    var u model.User
+    var u User
     if err := c.ShouldBindJSON(&u); err != nil {
         c.JSON(http.StatusOK, gin.H{"code": 10001, "msg": "参数错误"})
         return
     }
 
-    user, err := user_service.Login(u.Username, u.Password)
+    user, err := Login(u.Username, u.Password)
     if err != nil {
         c.JSON(http.StatusOK, gin.H{"code": 10006, "msg": "用户名或密码错误"})
         return
@@ -60,7 +58,7 @@ func UpdateNicknameHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"code": 10001, "msg": "参数错误"})
 		return
 	}
-	if err := user_service.UpdateUser(req.UserID, map[string]interface{}{"nickname": req.Nickname}); err != nil {
+	if err := UpdateUser(req.UserID, map[string]interface{}{"nickname": req.Nickname}); err != nil {
 		c.JSON(http.StatusOK, gin.H{"code": 10002, "msg": "服务器繁忙"})
 		return
 	}
@@ -77,7 +75,7 @@ func UpdateAvatarHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"code": 10001, "msg": "参数错误"})
 		return
 	}
-	if err := user_service.UpdateUser(req.UserID, map[string]interface{}{"avatar_url": req.AvatarURL}); err != nil {
+	if err := UpdateUser(req.UserID, map[string]interface{}{"avatar_url": req.AvatarURL}); err != nil {
 		c.JSON(http.StatusOK, gin.H{"code": 10002, "msg": "服务器繁忙"})
 		return
 	}
@@ -93,7 +91,7 @@ func GetUserInfoHandler(c *gin.Context) {
 		return
 	}
 
-	u, err := user_service.GetUserInfo(uid.(int64))
+	u, err := GetUserInfo(uid.(int64))
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"code": 10002, "msg": "服务器繁忙"})
 		return

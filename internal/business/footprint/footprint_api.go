@@ -1,10 +1,9 @@
-package api
+package footprint
 
 import (
 	"net/http"
 	"strconv"
 
-	footprint_service "iam/internal/business/footprint/service"
 
 	"github.com/gin-gonic/gin"
 )
@@ -18,7 +17,7 @@ func GetFootprintsHandler(c *gin.Context) {
 	}
 	userID := uid.(int64)
 
-	footprints, err := footprint_service.GetFootprintsByUserID(userID)
+	footprints, err := GetFootprintsByUserID(userID)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"code": 10002, "msg": "服务器繁忙"})
 		return
@@ -60,7 +59,7 @@ func CreateFootprintHandler(c *gin.Context) {
 		return
 	}
 
-	if err := footprint_service.CreateFootprint(userID, params.AttractionID, params.Date); err != nil {
+	if err := CreateFootprint(userID, params.AttractionID, params.Date); err != nil {
 		c.JSON(http.StatusOK, gin.H{"code": 10002, "msg": "服务器繁忙"})
 		return
 	}
@@ -77,7 +76,7 @@ func DeleteFootprintHandler(c *gin.Context) {
 		return
 	}
 
-	if err := footprint_service.DeleteFootprint(id); err != nil {
+	if err := DeleteFootprint(id); err != nil {
 		c.JSON(http.StatusOK, gin.H{"code": 10002, "msg": "服务器繁忙"})
 		return
 	}
