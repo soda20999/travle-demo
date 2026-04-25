@@ -1,21 +1,4 @@
 services:
-  postgres:
-    image: postgres:16-alpine
-    container_name: travle-postgres
-    restart: unless-stopped
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_USER: travle
-      POSTGRES_PASSWORD: travle
-      POSTGRES_DB: travle
-    volumes:
-      - pg_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U travle"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
 
   redis:
     image: redis:7-alpine
@@ -43,9 +26,6 @@ services:
     environment:
       DATABASE_URL: "postgresql://travle:travle@postgres:5432/travle"
       MODEL_DIR: "/app/models"
-    depends_on:
-      postgres:
-        condition: service_healthy
 
   app:
     build: .
@@ -59,8 +39,6 @@ services:
     environment:
       TZ: Asia/Shanghai
     depends_on:
-      postgres:
-        condition: service_healthy
       redis:
         condition: service_healthy
       recognizer:
