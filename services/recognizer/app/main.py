@@ -36,12 +36,12 @@ def predict_endpoint(
 
 class IndexAddRequest(BaseModel):
     image_id: int
-    image_url: str
+    image_path: str
 
 
 @app.post("/index/add")
 def index_add(req: IndexAddRequest):
-    feature = predict.extract_feature_from_url(req.image_url)
+    feature = predict.extract_feature_from_path(req.image_path)
     feature_bytes = feature.tobytes()
     db.save_feature_vector(req.image_id, feature_bytes)
     index_manager.add_to_index(req.image_id, feature)

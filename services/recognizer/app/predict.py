@@ -122,10 +122,6 @@ def extract_feature(img: Image.Image) -> np.ndarray:
     return feature.flatten().astype(np.float32)
 
 
-def extract_feature_from_url(image_url: str) -> np.ndarray:
-    import httpx
-    response = httpx.get(image_url, timeout=30.0)
-    response.raise_for_status()
-    from io import BytesIO
-    img = Image.open(BytesIO(response.content)).convert("RGB")
+def extract_feature_from_path(image_path: str) -> np.ndarray:
+    img = Image.open(image_path).convert("RGB")
     return extract_feature(img)

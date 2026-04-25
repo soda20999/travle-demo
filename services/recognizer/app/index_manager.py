@@ -3,7 +3,7 @@ import threading
 import faiss
 import numpy as np
 
-from app import db
+from app import db, predict
 
 FEATURE_DIM = 512
 
@@ -24,12 +24,16 @@ def _build_index(ids: list[int], vectors: list[np.ndarray]) -> faiss.IndexIDMap:
 
 def load_index():
     global _index, _id_list
-    rows = db.load_all_features()
+    rows = db.load_all_images()
     ids = []
     vectors = []
     for row in rows:
+        if row["feature_vector"] is not None:
+            vec = np.frombuffer(row["feature_vector"], dtype=np.float32)
+        else:
+            vec = predict.extract_feature_from_path(row["image_path"])
+            db.save_feature_vector(row["id"], vec.tobytes())
         ids.append(row["id"])
-        vec = np.frombuffer(row["feature_vector"], dtype=np.float32)
         vectors.append(vec)
 
     with _lock:
@@ -77,7 +81,7 @@ def remove_from_index(image_id: int):
             return
         new_id_list = [i for i in _id_list if i != image_id]
 
-    rows = db.load_all_features()
+    rows = db.load_all_images()
     id_set = set(new_id_list)
     ids = []
     vectors = []
