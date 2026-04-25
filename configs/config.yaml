@@ -13,15 +13,18 @@ log:
   max_backups: 7
 
 postgres:
-  dsn: "postgresql://neondb_owner:npg_bfF67qShuMZv@ep-lingering-term-a4zdc2i2-pooler.us-east-1.aws.neon.tech/vchat?sslmode=require"
+  dsn: "postgresql://travle:travle@localhost:5432/travle?sslmode=disable"
   max_open_conns: 10
   max_idle_conns: 5
   log_level: "info"
 
 
 redis:
-  host: "192.168.168.101"
+  host: "localhost"
   port: 6379
   db: 0
   pool_size: 16
   max_retries: 0
+
+recognizer:
+  base_url: "http://localhost:8000"

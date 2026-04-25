@@ -6,6 +6,7 @@ import (
 	footprint_api "iam/internal/business/footprint"
 	preference_api "iam/internal/business/preference"
 	user_api "iam/internal/business/user"
+	rec_api "iam/internal/business/recognize"
 	"iam/internal/pkg/config/logger"
 	"iam/internal/pkg/middlewares"
 	"net/http"
@@ -82,6 +83,16 @@ func Setup() *gin.Engine {
 			ar.GET("", ar_api.GetARScansHandler)
 			ar.GET("/:id", ar_api.GetARScanByIDHandler)
 			ar.POST("", ar_api.CreateARScanHandler)
+		}
+
+		auth.POST("/recognize", rec_api.RecognizeHandler)
+
+		gallery := auth.Group("/gallery")
+		{
+			gallery.POST("/images", rec_api.AddGalleryImageHandler)
+			gallery.DELETE("/images/:id", rec_api.DeleteGalleryImageHandler)
+			gallery.GET("/attractions/:id/images", rec_api.GetGalleryImagesHandler)
+			gallery.POST("/rebuild-index", rec_api.RebuildIndexHandler)
 		}
 
 		auth.GET("/home", middlewares.HomeHandler)
