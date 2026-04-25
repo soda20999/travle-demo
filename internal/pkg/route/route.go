@@ -1,6 +1,7 @@
 package route
 
 import (
+	ar_api "iam/internal/business/ar/api"
 	discover_api "iam/internal/business/discover/api"
 	footprint_api "iam/internal/business/footprint/api"
 	preference_api "iam/internal/business/preference/api"
@@ -73,6 +74,14 @@ func Setup() *gin.Engine {
 			foot.GET("", footprint_api.GetFootprintsHandler)
 			foot.POST("", footprint_api.CreateFootprintHandler)
 			foot.DELETE("/:id", footprint_api.DeleteFootprintHandler)
+		}
+
+		// AR相关
+		ar := auth.Group("/ar-scans")
+		{
+			ar.GET("", ar_api.GetARScansHandler)
+			ar.GET("/:id", ar_api.GetARScanByIDHandler)
+			ar.POST("", ar_api.CreateARScanHandler)
 		}
 
 		auth.GET("/home", middlewares.HomeHandler)
