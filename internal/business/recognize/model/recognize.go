@@ -6,7 +6,7 @@ import "time"
 type AttractionImage struct {
 	ID            int64     `gorm:"primaryKey;autoIncrement;column:id" json:"id"`
 	AttractionID  int64     `gorm:"column:attraction_id;not null;index" json:"attraction_id"`
-	ImageURL      string    `gorm:"column:image_url;size:500;not null" json:"image_url"`
+	ImagePath     string    `gorm:"column:image_path;size:500;not null" json:"image_path"`
 	FeatureVector []byte    `gorm:"column:feature_vector;type:bytea" json:"-"`
 	CreatedAt     time.Time `gorm:"column:created_at;autoCreateTime" json:"created_at"`
 	UpdatedAt     time.Time `gorm:"column:updated_at;autoUpdateTime" json:"updated_at"`

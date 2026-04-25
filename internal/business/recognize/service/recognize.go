@@ -24,7 +24,7 @@ func CreateAttractionImage(img *rec_model.AttractionImage) error {
 	if err := postgresql.DB.Create(img).Error; err != nil {
 		return err
 	}
-	if err := indexAdd(img.ID, img.ImageURL); err != nil {
+	if err := indexAdd(img.ID, img.ImagePath); err != nil {
 		postgresql.DB.Delete(img)
 		return fmt.Errorf("index add failed: %w", err)
 	}
@@ -179,11 +179,11 @@ func callPredict(fileHeader *multipart.FileHeader, topK int) ([]PredictResult, e
 	return result.Results, nil
 }
 
-func indexAdd(imageID int64, imageURL string) error {
+func indexAdd(imageID int64, imagePath string) error {
 	baseURL := config.Conf.RecognizerConfig.BaseURL
 	body, _ := json.Marshal(map[string]interface{}{
-		"image_id":  imageID,
-		"image_url": imageURL,
+		"image_id":   imageID,
+		"image_path": imagePath,
 	})
 	resp, err := recognizerClient.Post(baseURL+"/index/add", "application/json", bytes.NewReader(body))
 	if err != nil {

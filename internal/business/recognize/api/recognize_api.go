@@ -40,7 +40,7 @@ func RecognizeHandler(c *gin.Context) {
 func AddGalleryImageHandler(c *gin.Context) {
 	var req struct {
 		AttractionID int64  `json:"attraction_id" binding:"required"`
-		ImageURL     string `json:"image_url" binding:"required"`
+		ImagePath    string `json:"image_path" binding:"required"`
 	}
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusOK, gin.H{"code": 10001, "msg": "参数错误"})
@@ -49,7 +49,7 @@ func AddGalleryImageHandler(c *gin.Context) {
 
 	img := rec_model.AttractionImage{
 		AttractionID: req.AttractionID,
-		ImageURL:     req.ImageURL,
+		ImagePath:    req.ImagePath,
 	}
 	if err := rec_service.CreateAttractionImage(&img); err != nil {
 		c.JSON(http.StatusOK, gin.H{"code": 10002, "msg": "添加失败"})
@@ -61,7 +61,7 @@ func AddGalleryImageHandler(c *gin.Context) {
 		"data": gin.H{
 			"id":            img.ID,
 			"attraction_id": img.AttractionID,
-			"image_url":     img.ImageURL,
+			"image_path":    img.ImagePath,
 			"created_at":    img.CreatedAt,
 		},
 		"msg": "success",
