@@ -6,6 +6,7 @@ import (
 	footprint_api "iam/internal/business/footprint"
 	preference_api "iam/internal/business/preference"
 	user_api "iam/internal/business/user"
+	rec_api "iam/internal/business/recognize"
 	"iam/internal/pkg/config/logger"
 	"iam/internal/pkg/middlewares"
 	"net/http"

@@ -1,5 +1,4 @@
-// internal/business/recognize/model/recognize.go
-package model
+package recognize
 
 import "time"
 

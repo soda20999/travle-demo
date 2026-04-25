@@ -1,4 +1,5 @@
-package recognize_service
+package recognize
+
 
 import (
 	"bytes"
@@ -10,9 +11,8 @@ import (
 	"net/http"
 	"time"
 
-	rec_model "iam/internal/business/recognize/model"
-	discover_model "iam/internal/business/discover/model"
 	postgresql "iam/internal/pkg/config/postsql"
+	dicover "iam/internal/business/discover"
 	"iam/pkg/config"
 
 	"gorm.io/gorm"
@@ -20,7 +20,7 @@ import (
 
 var recognizerClient = &http.Client{Timeout: 30 * time.Second}
 
-func CreateAttractionImage(img *rec_model.AttractionImage) error {
+func CreateAttractionImage(img *AttractionImage) error {
 	if err := postgresql.DB.Create(img).Error; err != nil {
 		return err
 	}
@@ -32,7 +32,7 @@ func CreateAttractionImage(img *rec_model.AttractionImage) error {
 }
 
 func DeleteAttractionImage(id int64) error {
-	var img rec_model.AttractionImage
+	var img AttractionImage
 	if err := postgresql.DB.First(&img, id).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil
@@ -45,8 +45,8 @@ func DeleteAttractionImage(id int64) error {
 	return postgresql.DB.Delete(&img).Error
 }
 
-func GetImagesByAttractionID(attractionID int64) ([]rec_model.AttractionImage, error) {
-	var images []rec_model.AttractionImage
+func GetImagesByAttractionID(attractionID int64) ([]AttractionImage, error) {
+	var images []AttractionImage
 	err := postgresql.DB.Where("attraction_id = ?", attractionID).
 		Order("created_at DESC").Find(&images).Error
 	return images, err
@@ -72,7 +72,7 @@ type PredictResult struct {
 }
 
 type RecognizeResult struct {
-	Attraction discover_model.Attraction `json:"attraction"`
+	Attraction dicover.Attraction `json:"attraction"`
 	Similarity float64                   `json:"similarity"`
 }
 
@@ -90,7 +90,7 @@ func Recognize(fileHeader *multipart.FileHeader, topK int) ([]RecognizeResult, e
 		imageIDs[i] = r.ImageID
 	}
 
-	var images []rec_model.AttractionImage
+	var images []AttractionImage
 	if err := postgresql.DB.Where("id IN ?", imageIDs).Find(&images).Error; err != nil {
 		return nil, err
 	}
@@ -102,11 +102,11 @@ func Recognize(fileHeader *multipart.FileHeader, topK int) ([]RecognizeResult, e
 		attractionIDs = append(attractionIDs, img.AttractionID)
 	}
 
-	var attractions []discover_model.Attraction
+	var attractions []dicover.Attraction
 	if err := postgresql.DB.Where("id IN ?", attractionIDs).Find(&attractions).Error; err != nil {
 		return nil, err
 	}
-	attractionMap := make(map[int64]discover_model.Attraction)
+	attractionMap := make(map[int64]dicover.Attraction)
 	for _, a := range attractions {
 		attractionMap[a.ID] = a
 	}

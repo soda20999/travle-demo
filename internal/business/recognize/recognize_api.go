@@ -1,11 +1,10 @@
-package api
+package recognize
+
 
 import (
 	"net/http"
 	"strconv"
 
-	rec_model "iam/internal/business/recognize/model"
-	rec_service "iam/internal/business/recognize/service"
 
 	"github.com/gin-gonic/gin"
 )
@@ -24,7 +23,7 @@ func RecognizeHandler(c *gin.Context) {
 		}
 	}
 
-	results, err := rec_service.Recognize(file, topK)
+	results, err := Recognize(file, topK)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"code": 10002, "msg": "识别服务异常"})
 		return
@@ -47,11 +46,11 @@ func AddGalleryImageHandler(c *gin.Context) {
 		return
 	}
 
-	img := rec_model.AttractionImage{
+	img := AttractionImage{
 		AttractionID: req.AttractionID,
 		ImageURL:     req.ImageURL,
 	}
-	if err := rec_service.CreateAttractionImage(&img); err != nil {
+	if err := CreateAttractionImage(&img); err != nil {
 		c.JSON(http.StatusOK, gin.H{"code": 10002, "msg": "添加失败"})
 		return
 	}
@@ -76,7 +75,7 @@ func DeleteGalleryImageHandler(c *gin.Context) {
 		return
 	}
 
-	if err := rec_service.DeleteAttractionImage(id); err != nil {
+	if err := DeleteAttractionImage(id); err != nil {
 		c.JSON(http.StatusOK, gin.H{"code": 10002, "msg": "删除失败"})
 		return
 	}
@@ -92,7 +91,7 @@ func GetGalleryImagesHandler(c *gin.Context) {
 		return
 	}
 
-	images, err := rec_service.GetImagesByAttractionID(attractionID)
+	images, err := GetImagesByAttractionID(attractionID)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"code": 10002, "msg": "查询失败"})
 		return
@@ -106,7 +105,7 @@ func GetGalleryImagesHandler(c *gin.Context) {
 }
 
 func RebuildIndexHandler(c *gin.Context) {
-	if err := rec_service.RebuildIndex(); err != nil {
+	if err := RebuildIndex(); err != nil {
 		c.JSON(http.StatusOK, gin.H{"code": 10002, "msg": "重建索引失败"})
 		return
 	}
