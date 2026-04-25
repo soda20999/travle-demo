@@ -1,4 +1,4 @@
-package model
+package ar
 
 import (
 	"time"

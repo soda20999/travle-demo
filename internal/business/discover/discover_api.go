@@ -1,18 +1,16 @@
-package api
+package discover
 
 import (
 	"net/http"
 	"strconv"
 
-    
-	discover_service "iam/internal/business/discover/service"
 
 	"github.com/gin-gonic/gin"
 )
 
 // GetProvincesHandler 获取所有省份的处理函数
 func GetProvincesHandler(c *gin.Context) {
-	provinces, err := discover_service.GetAllProvinces()
+	provinces, err := GetAllProvinces()
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"code": 10002, "msg": "服务器繁忙"})
 		return
@@ -44,7 +42,7 @@ func GetProvinceByIDHandler(c *gin.Context) {
 		return
 	}
 
-	province, err := discover_service.GetProvinceByID(provinceID)
+	province, err := GetProvinceByID(provinceID)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"code": 10002, "msg": "服务器繁忙"})
 		return
@@ -70,7 +68,7 @@ func GetProvinceWithCitiesHandler(c *gin.Context) {
 		return
 	}
 
-	province, err := discover_service.GetProvinceWithCities(provinceID)
+	province, err := GetProvinceWithCities(provinceID)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"code": 10002, "msg": "服务器繁忙"})
 		return
@@ -120,7 +118,7 @@ func GetCitiesByProvinceHandler(c *gin.Context) {
 		return
 	}
 
-	cities, err := discover_service.GetCitiesByProvinceID(provinceID)
+	cities, err := GetCitiesByProvinceID(provinceID)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"code": 10002, "msg": "服务器繁忙"})
 		return
@@ -164,7 +162,7 @@ func GetCityByIDHandler(c *gin.Context) {
 		return
 	}
 
-	city, err := discover_service.GetCityByID(cityID)
+	city, err := GetCityByID(cityID)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"code": 10002, "msg": "服务器繁忙"})
 		return
@@ -204,7 +202,7 @@ func GetCityWithAttractionsHandler(c *gin.Context) {
 		return
 	}
 
-	city, err := discover_service.GetCityWithAttractions(cityID)
+	city, err := GetCityWithAttractions(cityID)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"code": 10002, "msg": "服务器繁忙"})
 		return
@@ -279,7 +277,7 @@ func GetAttractionsByCityHandler(c *gin.Context) {
 		return
 	}
 
-	attractions, err := discover_service.GetAttractionsByCityID(cityID)
+	attractions, err := GetAttractionsByCityID(cityID)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"code": 10002, "msg": "服务器繁忙"})
 		return
@@ -337,7 +335,7 @@ func GetAttractionByIDHandler(c *gin.Context) {
 		return
 	}
 
-	attraction, err := discover_service.GetAttractionByID(attractionID)
+	attraction, err := GetAttractionByID(attractionID)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"code": 10002, "msg": "服务器繁忙"})
 		return
